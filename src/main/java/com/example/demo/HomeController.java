@@ -1,17 +1,15 @@
 package com.example.demo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class HomeController {
 
-    @RequestMapping("/")
-    public String basic(){
+    @RequestMapping("/}")
+    public String basic(Model model){
         return "index";
     }
 
@@ -32,7 +30,11 @@ public class HomeController {
     public @ResponseBody String processCommands(@RequestParam String command,
                                                 @RequestParam String gameid,
                                                 @RequestParam String gamehash){
+        if (gameid.equals("") || gamehash.equals("")) {
+            return "redirect:/newmatch";
+        }
         command = Command.process(command);
         return command;
     }
+
 }
